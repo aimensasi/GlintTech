@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -28,16 +29,37 @@ model User {
 model Restaurant {
     id Int @id @default(autoincrement())
     name String
-    openingHours String
     cashBalance Decimal @default(0)
+    menuSize Int
+    averageDishPrice Decimal
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     dishes Dish[]
     orders Order[]
+    openingHours OpeningHour[]
+
+    @@fulltext([name])
     @@map("restaurants")
 }
+
+model OpeningHour {
+    id Int @id @default(autoincrement())
+
+    restaurantId Int
+    restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+
+    day String
+    fromTime String
+    toTime String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("openingHours")
+}
+
 
 model Dish {
     id Int @id @default(autoincrement())
