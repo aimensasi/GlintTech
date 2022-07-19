@@ -4,6 +4,7 @@ import { OrderDto } from './dto';
 import { User } from '@prisma/client';
 import { GetUserDecorator } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('orders')
 export class OrderController {
@@ -11,6 +12,7 @@ export class OrderController {
 
   @Post()
   @UseGuards(JwtGuard)
+  @ApiBody({ type: OrderDto })
   create(@Body() data: OrderDto, @GetUserDecorator() user: User) {
     return this.orderService.create(user, data);
   }

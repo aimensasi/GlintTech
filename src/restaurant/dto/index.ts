@@ -1,1 +1,1 @@
-export * from './TopRankingDto';
+export * from './TopRanking.dto';
